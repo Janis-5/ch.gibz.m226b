@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ch.gibz.m226b.Autovermietung1", "ch.gibz.m226b.Autovermietung1\ch.gibz.m226b.Autovermietung1.csproj", "{195BBD57-9F15-46F8-8863-A54BE69B2426}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ch.gibz.m226b.Autovermietung1", "ch.gibz.m226b.Autovermietung1\ch.gibz.m226b.Autovermietung1.csproj", "{195BBD57-9F15-46F8-8863-A54BE69B2426}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ch.gibz.m226b.Streams", "ch.gibz.m226b.Streams\ch.gibz.m226b.Streams.csproj", "{4BBDA8C1-8AA6-401C-8DDF-0F1DA87F483F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental", "CarRental\CarRental.csproj", "{724CA836-F298-4D1A-B331-6416F4331419}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{195BBD57-9F15-46F8-8863-A54BE69B2426}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{195BBD57-9F15-46F8-8863-A54BE69B2426}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{195BBD57-9F15-46F8-8863-A54BE69B2426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BBDA8C1-8AA6-401C-8DDF-0F1DA87F483F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BBDA8C1-8AA6-401C-8DDF-0F1DA87F483F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BBDA8C1-8AA6-401C-8DDF-0F1DA87F483F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BBDA8C1-8AA6-401C-8DDF-0F1DA87F483F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{724CA836-F298-4D1A-B331-6416F4331419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{724CA836-F298-4D1A-B331-6416F4331419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{724CA836-F298-4D1A-B331-6416F4331419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{724CA836-F298-4D1A-B331-6416F4331419}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

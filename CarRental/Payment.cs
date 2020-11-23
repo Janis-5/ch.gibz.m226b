@@ -1,0 +1,8 @@
+﻿namespace CarRental
+{
+    class Payment
+    {
+
+    }
+    
+}

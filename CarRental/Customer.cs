@@ -1,0 +1,7 @@
+﻿namespace CarRental
+{
+    class Customer
+    {
+
+    }
+}
