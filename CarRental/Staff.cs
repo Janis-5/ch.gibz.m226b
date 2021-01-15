@@ -5,8 +5,8 @@ namespace CarRental
 {
     class Staff
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        private string FirstName { get; }
+        private string LastName { get; }
         public bool IsFree { get; set; }
 
         public Staff(string FirstName, string LastName)
@@ -14,6 +14,12 @@ namespace CarRental
             this.FirstName = FirstName;
             this.LastName = LastName;
             IsFree = true;
+        }
+
+        public string GetInfo()
+        {
+            string info = $"{FirstName} {LastName}";
+            return info;
         }
     }
 }

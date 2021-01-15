@@ -6,10 +6,11 @@ namespace CarRental
 {
     class Vehicle
     {
-        private VehicleTypes VehicleType { get; }   
+        public VehicleTypes VehicleType { get; }   
         private string Brand { get; }
         private string Model { get; }
         private float Price { get; }
+        public bool IsFree { get; set; }
 
         public Vehicle(VehicleTypes VehicleType, string Brand, string Model, float Price)
         {
@@ -17,12 +18,13 @@ namespace CarRental
             this.Brand = Brand;
             this.Model = Model;
             this.Price = Price;
+            IsFree = true;
         }
-    }
-    public enum VehicleTypes
-    {
-        Auto,
-        Motorrad,
-        Lastwagen,
+
+        public string GetInfo()
+        {
+            string info = $"{Brand} {Model} | CHF {Price}.-";
+            return info;
+        }
     }
 }
