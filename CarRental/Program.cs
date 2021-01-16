@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 
 namespace CarRental
 {
@@ -10,63 +9,103 @@ namespace CarRental
     {
         static void Main(string[] args)
         {
-            /*List<Vehicle> _vehicles = new List<Vehicle>()
+
+            bool run = true;
+
+
+            Console.WriteLine("--Autovermietung---");
+
+            while (run)
             {
-                new Vehicle(VehicleTypes.Auto, "Audi", "model1", 22),
-                new Vehicle(VehicleTypes.Motorrad, "Harley", "model1", 22)
-            };
+                Console.WriteLine("[0] Fahrzeug mieten");
+                Console.WriteLine("[1] Fahrzeug zurückgeben");
+                Console.WriteLine("[2] Statistiken");
+                Console.WriteLine("[3] Beenden");
 
-            string jsonString = JsonConvert.SerializeObject(_vehicles);
-            File.WriteAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\vehicle.json", jsonString);*/
-
-             /*List<Staff> _staffs = new List<Staff>()
-             {
-                 new Staff("Luca", "Daniel"),
-                 new Staff("Laurin", "Bassler")
-             };
-
-             string jsonString = JsonConvert.SerializeObject(_staffs);
-             File.WriteAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\staff.json", jsonString);*/
-
-            string readstring;
-
-            readstring = File.ReadAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\staff.json");
-            var _staffs = JsonConvert.DeserializeObject<List<Staff>>(readstring);
-
-            readstring = File.ReadAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\vehicle.json");
-            var _vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(readstring);
-
-            Console.WriteLine("Guten Tag");
-
-            //Wähle den Mitarbeiter
-            Console.WriteLine("Alle verfügbaren Mitarbeiter: ");
-            foreach (var item in _staffs)
-            {
-                if (item.IsFree)
+                string input = Console.ReadLine();
+                switch (input)
                 {
-                    Console.WriteLine($"[{_staffs.IndexOf(item)}] {item.GetInfo()}");
+                    case "0":
+                        RentCar();
+                        break;
+                    case "1":
+                        //ReturnCar();
+                        break;
+                    case "2":
+                        //Stats();
+                        break;
+                    case "3":
+                        run = false;
+                        break;
+                    default:
+                        break;
                 }
-            }
-            while (ChooseStaff(_staffs));
+            }      
 
-            //Wähle den Fahrzeugtypen
-            Console.WriteLine("Alle Fahrzeug Typen:");
-            for (int i = 0; i < Enum.GetNames(typeof(VehicleTypes)).Length; i++)
+            void RentCar()
             {
-                Console.WriteLine($"[{i}] {(VehicleTypes)i}");
-            }
-            while (ChooseVehicleType());
 
-            //Wähle das Fahrzeug
-            Console.WriteLine("Alle verfügbaren Fahrzeuge:");
-            foreach (var item in _vehicles)
-            {
-                if (item.IsFree)
+                string readstring;
+
+                readstring = File.ReadAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\staff.json");
+                var _staffs = JsonConvert.DeserializeObject<List<Staff>>(readstring);
+
+                readstring = File.ReadAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\vehicle.json");
+                var _vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(readstring, new VehicleConverter());
+
+                readstring = File.ReadAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\contract.json");
+                var _contracts = JsonConvert.DeserializeObject<List<Contract>>(readstring);
+
+                Contract tmpContract = new Contract();
+
+                Console.WriteLine("Guten Tag");
+
+                //Wähle den Mitarbeiter
+                Console.WriteLine("Alle verfügbaren Mitarbeiter: ");
+                foreach (var item in _staffs)
                 {
-                    Console.WriteLine($"[{_vehicles.IndexOf(item)}] {item.GetInfo()}");
+                    if (item.IsFree)
+                    {
+                        Console.WriteLine($"[{_staffs.IndexOf(item)}] {item.GetInfos()}");
+                    }
                 }
+
+                do
+                {
+                    tmpContract.Staff = ChooseStaff(_staffs);
+                } while (tmpContract.Staff == null);
+
+                //Wähle den Fahrzeugtypen
+                Console.WriteLine("Alle Fahrzeug Typen:");
+                for (int i = 0; i < Enum.GetNames(typeof(VehicleTypes)).Length - 1; i++)
+                {
+                    Console.WriteLine($"[{i}] {(VehicleTypes)i}");
+                }
+
+                do
+                {
+                    tmpContract.VehicleType = ChooseVehicleType();
+                } while (tmpContract.VehicleType == VehicleTypes.None);
+
+                //Wähle das Fahrzeug
+                Console.WriteLine("Alle verfügbaren Fahrzeuge:");
+                foreach (var item in _vehicles)
+                {
+                    if (item.IsFree && item.VehicleType == tmpContract.VehicleType)
+                    {
+                        Console.WriteLine($"[{_vehicles.IndexOf(item)}] {item.GetInfos()}");
+                    }
+                }
+
+                do
+                {
+                    tmpContract.Vehicle = ChooseVehicle(_vehicles);
+                } while (tmpContract.Vehicle == null);
+
+
             }
-            while (ChooseVehicle(_vehicles));
+
+
 
 
             /*
@@ -78,46 +117,46 @@ namespace CarRental
             */
 
 
-            bool ChooseStaff(List<Staff> _staffs)
+            Staff ChooseStaff(List<Staff> _staffs)
             {
                 try
                 {
                     Console.Write("Wählen Sie einen Mitarbeiter anhand von der Zuvorstehender Nummer: ");
                     string input = Console.ReadLine();
                     _staffs[Convert.ToInt32(input)].IsFree = false;
-                    return false;
+                    return _staffs[Convert.ToInt32(input)];
                 }
                 catch
                 {
                     Console.WriteLine("Fehler!!!");
-                    return true;
+                    return null;
                 }
             }
 
-            bool ChooseVehicleType()
+            VehicleTypes ChooseVehicleType()
             {
                 try
                 {
                     Console.Write("Wählen Sie den Fahrzeugstyp anhand von der Zuvorstehender Nummer: ");
                     string input = Console.ReadLine();
-                    return false;
+                    return (VehicleTypes)Convert.ToInt32(input);
                 }
-                catch { return true; }
+                catch { return VehicleTypes.None; }
             }
 
-            bool ChooseVehicle(List<Vehicle> _vehicles)
+            Vehicle ChooseVehicle(List<Vehicle> _vehicles)
             {
                 try
                 {
                     Console.Write("Wählen Sie das Fahrzeug anhand von der Zuvorstehender Nummer: ");
                     string input = Console.ReadLine();
                     _vehicles[Convert.ToInt32(input)].IsFree = false;
-                    return false;
+                    return _vehicles[Convert.ToInt32(input)];
                 }
                 catch
                 {
                     Console.WriteLine("Fehler!!!");
-                    return true;
+                    return null;
                 }
             }
         }

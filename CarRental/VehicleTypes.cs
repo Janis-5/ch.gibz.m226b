@@ -5,5 +5,6 @@
         Auto,
         Transporter,
         Motorrad,
+        None
     }
 }

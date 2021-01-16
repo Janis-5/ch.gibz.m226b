@@ -1,15 +1,16 @@
-﻿using System;
+﻿using ch.gibz.m226b.CarRental.Interface;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CarRental
 {
-    class Vehicle
+    public class Vehicle : IGetInfos
     {
-        public VehicleTypes VehicleType { get; }   
-        private string Brand { get; }
-        private string Model { get; }
-        private float Price { get; }
+        public VehicleTypes VehicleType { get; set; }   
+        public string Brand { get; set; }
+        public string Model { get; set; }
+        public float Price { get; set; }
         public bool IsFree { get; set; }
 
         public Vehicle(VehicleTypes VehicleType, string Brand, string Model, float Price)
@@ -21,10 +22,19 @@ namespace CarRental
             IsFree = true;
         }
 
-        public string GetInfo()
+        public Vehicle(string Brand, string Model, float Price)
         {
-            string info = $"{Brand} {Model} | CHF {Price}.-";
-            return info;
+            this.Brand = Brand;
+            this.Model = Model;
+            this.Price = Price;
+        }
+
+        public Vehicle()
+        {}
+
+        public virtual string GetInfos()
+        {
+            return $"{Brand} {Model} | CHF {Price}.-";
         }
     }
 }

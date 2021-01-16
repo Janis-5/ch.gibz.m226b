@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ch.gibz.m226b.CarRental.Interface;
+using System;
 using System.Collections.Generic;
 
 namespace CarRental
 {
-    class Staff
+    class Staff : IGetInfos
     {
-        private string FirstName { get; }
-        private string LastName { get; }
+        public string FirstName { get; }
+        public string LastName { get; }
         public bool IsFree { get; set; }
 
         public Staff(string FirstName, string LastName)
@@ -16,10 +17,9 @@ namespace CarRental
             IsFree = true;
         }
 
-        public string GetInfo()
+        public string GetInfos()
         {
-            string info = $"{FirstName} {LastName}";
-            return info;
+            return $"{FirstName} {LastName}";
         }
     }
 }

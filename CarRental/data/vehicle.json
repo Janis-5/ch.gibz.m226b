@@ -1,1 +1,1 @@
-[{"VehicleType":0,"Brand":"Audi","Model":"model1","Price":22.0,"IsFree":true},{"VehicleType":2,"Brand":"Harley","Model":"model1","Price":22.0,"IsFree":true}]
+[{"VehicleType":0,"Brand":"Audi","Model":"model1","Price":22.0,"IsFree":true},{"VehicleType":2,"Brand":"Harley","Model":"model1","Price":22.0,"IsFree":true},{"Capacity":"102 x 200 x 50","VehicleType":1,"Brand":"test","Model":"test","Price":20.0,"IsFree":true}]
