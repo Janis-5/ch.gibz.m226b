@@ -18,7 +18,7 @@ namespace CarRental
 
         public override string GetInfos()
         {
-            return $"{Brand} {Model} {Capacity} | CHF {Price}.-";
+            return $"{Brand} {Model} {Capacity} | CHF {Price}.- / Tag";
         }
 
 

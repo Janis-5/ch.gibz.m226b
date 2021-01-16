@@ -103,6 +103,40 @@ namespace CarRental
                 } while (tmpContract.Vehicle == null);
 
 
+                do
+                {
+                    tmpContract.RentalDays = SetRentalDays();
+                } while (tmpContract.RentalDays == 0);
+
+                tmpContract.DisplayContract();
+
+                tmpContract.SetSum();
+
+                Console.WriteLine($"Zu Bezahlen: {tmpContract.Sum}");
+
+                for (int i = 0; i < Enum.GetNames(typeof(PayMethod)).Length - 1; i++)
+                {
+                    Console.WriteLine($"[{i}] {(PayMethod)i}");
+                }
+
+                do
+                {
+                    tmpContract.PayMethod = ChoosePayMethod();
+                } while (tmpContract.PayMethod == PayMethod.None);
+
+
+                if (tmpContract.PayMethod == PayMethod.Bar)
+                {
+                    while (Pay(Convert.ToDecimal(tmpContract.Sum)));
+                }
+                else
+                {
+                    Console.WriteLine("Kreditkarte bla bla");
+                }
+
+                
+
+
             }
 
 
@@ -141,7 +175,10 @@ namespace CarRental
                     string input = Console.ReadLine();
                     return (VehicleTypes)Convert.ToInt32(input);
                 }
-                catch { return VehicleTypes.None; }
+                catch {
+                    Console.WriteLine("Fehler!!!");
+                    return VehicleTypes.None; 
+                }
             }
 
             Vehicle ChooseVehicle(List<Vehicle> _vehicles)
@@ -157,6 +194,63 @@ namespace CarRental
                 {
                     Console.WriteLine("Fehler!!!");
                     return null;
+                }
+            }
+
+            int SetRentalDays()
+            {
+                try
+                {
+                    Console.WriteLine("Für wie viele Tage möchten Sie das Fahrzeug mieten?");
+                    string input = Console.ReadLine();
+                    return Convert.ToInt32(input);
+                }
+                catch
+                {
+                    Console.WriteLine("Fehler!!!");
+                    return 0;
+                }
+            }
+
+            PayMethod ChoosePayMethod()
+            {
+                try
+                {
+                    Console.Write("Wählen Sie die Zahlungsart anhand von der Zuvorstehender Nummer: ");
+                    string input = Console.ReadLine();
+                    return (PayMethod)Convert.ToInt32(input);
+                }
+                catch
+                {
+                    Console.WriteLine("Fehler!!!");
+                    return PayMethod.None;
+                }
+            }
+
+            bool Pay(decimal betrag)
+            {
+                decimal uinput;
+                try
+                {
+                    Console.Write("Geben Sie den Betrag ein:");
+                    string input = Console.ReadLine();
+                    uinput = Convert.ToDecimal(input);
+                }
+                catch
+                {
+                    Console.WriteLine("Fehler!!!");
+                    return true;
+                }
+
+                if (uinput >= betrag)
+                {
+                    Console.WriteLine($"Rückgeld: {uinput - betrag}");
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Fehler");
+                    return true;
                 }
             }
         }
