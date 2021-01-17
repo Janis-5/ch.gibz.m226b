@@ -29,10 +29,10 @@ namespace CarRental
                         RentCar();
                         break;
                     case "1":
-                        //ReturnCar();
+                        ReturnCar();
                         break;
                     case "2":
-                        //Stats();
+                        Stats();
                         break;
                     case "3":
                         run = false;
@@ -46,6 +46,7 @@ namespace CarRental
             {
 
                 string readstring;
+                string jsonString;
 
                 readstring = File.ReadAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\staff.json");
                 var _staffs = JsonConvert.DeserializeObject<List<Staff>>(readstring);
@@ -59,6 +60,10 @@ namespace CarRental
                 Contract tmpContract = new Contract();
 
                 Console.WriteLine("Guten Tag");
+
+                //Eingabe Persöhnliche Daten (Name Vorname)
+                Console.WriteLine("Geben Sie ihren Vollständigen Namen ein: ");
+                tmpContract.CustomerName = Console.ReadLine();
 
                 //Wähle den Mitarbeiter
                 Console.WriteLine("Alle verfügbaren Mitarbeiter: ");
@@ -105,6 +110,12 @@ namespace CarRental
 
                 do
                 {
+                    tmpContract.StartDate = SetStartDate();
+                } while (tmpContract.StartDate == new DateTime(2000, 1, 1));
+
+
+                do
+                {
                     tmpContract.RentalDays = SetRentalDays();
                 } while (tmpContract.RentalDays == 0);
 
@@ -134,22 +145,106 @@ namespace CarRental
                     Console.WriteLine("Kreditkarte bla bla");
                 }
 
-                
+                Console.WriteLine("Gute Fahrt!");
+
+                _contracts.Add(tmpContract);
+
+                jsonString = JsonConvert.SerializeObject(_vehicles);
+                File.WriteAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\vehicle.json", jsonString);
+
+                jsonString = JsonConvert.SerializeObject(_contracts);
+                File.WriteAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\contract.json", jsonString);
+            }
+
+            void ReturnCar()
+            {
+                string readstring;
+                string jsonString;
+
+                readstring = File.ReadAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\contract.json");
+                var _contracts = JsonConvert.DeserializeObject<List<Contract>>(readstring);
+
+                int index;
+
+                Console.WriteLine("Return Car");
+
+                Console.WriteLine("Geben Sie ihren Vollständigen Namen ein: ");
+                string input = Console.ReadLine();
+
+                foreach (var item in _contracts)
+                {
+                    if (item.CustomerName == input && item.GotReturned ==  false)
+                    {
+                        Console.WriteLine($"[{_contracts.IndexOf(item)}]");
+                        item.DisplayContract();
+                    }
+                }
+                do
+                {
+                    index = ChooseContract(_contracts);
+                } while (index == -1);
+
+
+                Console.WriteLine("Ihr Fehrzeug welches Sie zurückgeben:");
+                _contracts[index].DisplayContract();
+
+                //Irgendwelche Funktionen Welche das Fahrzeug säubert und den Wieder zu Verfügung stellt:
+                //VehicleCLean();
+                //SetVehicleAvailable();
+
+                jsonString = JsonConvert.SerializeObject(_contracts);
+                File.WriteAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\contract.json", jsonString);
 
 
             }
 
+            void Stats()
+            {
+                string readstring;
 
+                readstring = File.ReadAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\contract.json");
+                var _contracts = JsonConvert.DeserializeObject<List<Contract>>(readstring);
 
+                Stats year = new Stats();
+                Stats month = new Stats();
+                Stats week = new Stats();
+                Stats day = new Stats();
 
-            /*
-            string jsonString = JsonConvert.SerializeObject(_staffs);
-            File.WriteAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\staff.json", jsonString);
+                foreach (var item in _contracts)
+                {
+                    DateTime.Today.AddYears(1);
+                    if (item.StartDate < DateTime.Now.AddYears(1).Date)
+                    {
+                        year.VehicleAmount += 1;
+                        year.Money += item.Sum;
+                    }
+                    if (item.StartDate < DateTime.Now.AddMonths(1).Date)
+                    {
+                        month.VehicleAmount += 1;
+                        month.Money += item.Sum;
+                    }
+                    if (item.StartDate < DateTime.Now.AddDays(7).Date)
+                    {
+                        week.VehicleAmount += 1;
+                        week.Money += item.Sum;
+                    }
+                    if (item.StartDate < DateTime.Today.Date)
+                    {
+                        day.VehicleAmount += 1;
+                        day.Money += item.Sum;
+                    }
+                }
 
-            string jsonString = JsonConvert.SerializeObject(_vehicles);
-            File.WriteAllText(@"C:\Users\janis\Schule Disk\Daten\M226B\ch.gibz.m226b\CarRental\data\vehicle.json", jsonString);
-            */
-
+                Console.WriteLine("Stats:");
+                Console.WriteLine("Year:");
+                year.DisplayStats();
+                Console.WriteLine("Month:");
+                month.DisplayStats();
+                Console.WriteLine("Week:");
+                week.DisplayStats();
+                Console.WriteLine("Today:");
+                day.DisplayStats();
+            }
 
             Staff ChooseStaff(List<Staff> _staffs)
             {
@@ -194,6 +289,21 @@ namespace CarRental
                 {
                     Console.WriteLine("Fehler!!!");
                     return null;
+                }
+            }
+
+            DateTime SetStartDate()
+            {
+                try
+                {
+                    Console.WriteLine("Gen Sie das Startdatum ein (z.B. 10/22/2021)");
+                    DateTime input = DateTime.Parse(Console.ReadLine());
+                    return input;
+                }
+                catch
+                {
+                    Console.WriteLine("Fehler!!!");
+                    return new DateTime(2000, 1,1);
                 }
             }
 
@@ -251,6 +361,22 @@ namespace CarRental
                 {
                     Console.WriteLine("Fehler");
                     return true;
+                }
+            }
+
+            int ChooseContract(List<Contract> _contracts)
+            {
+                try
+                {
+                    Console.Write("Wählen Sie Ihren Vertrag anhand der Zuvorstehender Nummer: ");
+                    string input = Console.ReadLine();
+                    _contracts[Convert.ToInt32(input)].GotReturned = true;
+                    return Convert.ToInt32(input);
+                }
+                catch
+                {
+                    Console.WriteLine("Fehler!!!");
+                    return -1;
                 }
             }
         }
