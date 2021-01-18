@@ -257,7 +257,7 @@ namespace CarRental
                 }
                 catch
                 {
-                    Console.WriteLine("Fehler!!!");
+                    Console.WriteLine("Ungültige Eingabe");
                     return null;
                 }
             }
@@ -271,7 +271,7 @@ namespace CarRental
                     return (VehicleTypes)Convert.ToInt32(input);
                 }
                 catch {
-                    Console.WriteLine("Fehler!!!");
+                    Console.WriteLine("Ungültige Eingabe");
                     return VehicleTypes.None; 
                 }
             }
@@ -287,7 +287,7 @@ namespace CarRental
                 }
                 catch
                 {
-                    Console.WriteLine("Fehler!!!");
+                    Console.WriteLine("Ungültige Eingabe");
                     return null;
                 }
             }
@@ -302,7 +302,7 @@ namespace CarRental
                 }
                 catch
                 {
-                    Console.WriteLine("Fehler!!!");
+                    Console.WriteLine("Ungültige Eingabe");
                     return new DateTime(2000, 1,1);
                 }
             }
@@ -317,7 +317,7 @@ namespace CarRental
                 }
                 catch
                 {
-                    Console.WriteLine("Fehler!!!");
+                    Console.WriteLine("Ungültige Eingabe");
                     return 0;
                 }
             }
@@ -332,7 +332,7 @@ namespace CarRental
                 }
                 catch
                 {
-                    Console.WriteLine("Fehler!!!");
+                    Console.WriteLine("Ungültige Eingabe");
                     return PayMethod.None;
                 }
             }
@@ -348,7 +348,7 @@ namespace CarRental
                 }
                 catch
                 {
-                    Console.WriteLine("Fehler!!!");
+                    Console.WriteLine("Ungültige Eingabe");
                     return true;
                 }
 
@@ -359,7 +359,7 @@ namespace CarRental
                 }
                 else
                 {
-                    Console.WriteLine("Fehler");
+                    Console.WriteLine("Nicht genug Geld");
                     return true;
                 }
             }
@@ -375,7 +375,7 @@ namespace CarRental
                 }
                 catch
                 {
-                    Console.WriteLine("Fehler!!!");
+                    Console.WriteLine("Ungültige Eingabe");
                     return -1;
                 }
             }
